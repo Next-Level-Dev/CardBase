@@ -1,20 +1,29 @@
 {
   "cards": [
-    "card1.png",
-    "card1.png",
-    "card1.png",
-    "card1.png",
-    "card1.png",
-    "card1.png",
-    "card1.png",
-    "card1.png",
-    "card1.png",
-    "card1.png",
-    "card1.png",
-    "card1.png",
-    "card1.png",
-    "card1.png",
-    "card1.png",
-    "card1.png"
+    {
+      "filename": "card1.png",
+      "name": "Fire Dragon",
+      "rating": 4.5
+    },
+    {
+      "filename": "card2.png",
+      "name": "Water Serpent",
+      "rating": 3.8
+    },
+    {
+      "filename": "card3.png",
+      "name": "Earth Golem",
+      "rating": 4.2
+    },
+    {
+      "filename": "card4.png",
+      "name": "Wind Falcon",
+      "rating": 4.0
+    },
+    {
+      "filename": "card5.png",
+      "name": "Lightning Wolf",
+      "rating": 4.7
+    }
   ]
 }

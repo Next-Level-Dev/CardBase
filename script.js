@@ -1,29 +1,44 @@
-// Fetch card list from config.json and display cards
-
 const cardsContainer = document.getElementById('cards-container');
 const modal = document.getElementById('modal');
 const modalImage = document.getElementById('modal-image');
 const modalCloseBtn = document.getElementById('modal-close');
 
-function createCard(filename) {
+function createCard(cardData) {
+  const { filename, name, rating } = cardData;
+
   const card = document.createElement('div');
   card.classList.add('card');
   card.tabIndex = 0;
   card.setAttribute('role', 'button');
-  card.setAttribute('aria-label', `View ${filename}`);
+  card.setAttribute('aria-label', `View ${name} card`);
 
   const img = document.createElement('img');
   img.src = `images/${filename}`;
-  img.alt = filename.replace(/[-_]/g, ' ').replace('.png', '');
+  img.alt = name;
   img.loading = 'lazy';
 
-  card.appendChild(img);
+  const textContainer = document.createElement('div');
+  textContainer.classList.add('card-text');
 
-  card.addEventListener('click', () => openModal(img.src, img.alt));
+  const nameElem = document.createElement('p');
+  nameElem.classList.add('card-name');
+  nameElem.textContent = name;
+
+  const ratingElem = document.createElement('p');
+  ratingElem.classList.add('card-rating');
+  ratingElem.textContent = `Rating: ${rating.toFixed(1)} ★`;
+
+  textContainer.appendChild(nameElem);
+  textContainer.appendChild(ratingElem);
+
+  card.appendChild(img);
+  card.appendChild(textContainer);
+
+  card.addEventListener('click', () => openModal(img.src, name));
   card.addEventListener('keydown', e => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      openModal(img.src, img.alt);
+      openModal(img.src, name);
     }
   });
 
@@ -67,8 +82,8 @@ async function loadCards() {
       console.error('config.json must contain an array property "cards"');
       return;
     }
-    data.cards.forEach(filename => {
-      const card = createCard(filename);
+    data.cards.forEach(cardData => {
+      const card = createCard(cardData);
       cardsContainer.appendChild(card);
     });
   } catch (error) {
@@ -78,4 +93,3 @@ async function loadCards() {
 }
 
 loadCards();
-
