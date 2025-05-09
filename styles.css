@@ -18,12 +18,33 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1rem; /* Reduce padding to avoid overflow */
+  padding: 1rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  user-select: none;
 }
 
-/* ... other existing styles unchanged ... */
+header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  user-select: none;
+  text-shadow: 0 0 6px #00f0ff88;
+}
+
+h1 {
+  font-size: 2.8rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: #00f0ff;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+
+p {
+  font-size: 1.15rem;
+  color: #a0cfee;
+  text-shadow: 0 0 3px #007f8c99;
+}
 
 /* Cards container grid */
 .cards-grid {
@@ -31,13 +52,157 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 1rem;
   width: 100%;
-  max-width: 1150px;
+  max-width: 1000px; /* Limit max width for comfortable margins */
   box-sizing: border-box;
-  padding: 0 0.5rem;
+  padding: 0 1rem;
   margin-bottom: 1rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* Responsive adjustments */
+/* Card style */
+.card {
+  background: linear-gradient(145deg, #1f2732, #28303e);
+  border-radius: 16px;
+  box-shadow:
+    0 4px 8px rgba(0, 255, 255, 0.15),
+    inset 0 0 10px rgba(0, 255, 255, 0.3);
+  cursor: pointer;
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border: 2px solid transparent;
+}
+
+.card:hover,
+.card:focus {
+  cursor: pointer;
+  transform: translateY(-10px) scale(1.06);
+  box-shadow:
+    0 10px 16px rgba(0, 255, 255, 0.5),
+    inset 0 0 20px rgba(0, 255, 255, 0.5);
+  border-color: #00f0ff;
+  outline: none;
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 12px 12px 0 0;
+  filter: drop-shadow(0 0 0.6rem #00ffff88);
+  background: #14232a;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Text under card */
+.card-text {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  background: #0d151b;
+  border-radius: 0 0 16px 16px;
+  box-shadow: inset 0 2px 6px #00f0ff44;
+  text-align: center;
+  color: #90eaff;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 4px #00dfffaa;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+/* Card name */
+.card-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #00f0ff;
+  text-transform: uppercase;
+  filter: drop-shadow(0 0 2px #00cfffcc);
+}
+
+/* Card rating */
+.card-rating {
+  font-size: 0.9rem;
+  color: #7aeaff;
+  filter: drop-shadow(0 0 1.5px #00b0ffbb);
+  letter-spacing: 0.05em;
+}
+
+/* Modal styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(10, 20, 30, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1100;
+  backdrop-filter: blur(7px);
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  padding: 0.5rem;
+  border-radius: 18px;
+  box-shadow:
+    0 0 20px #00f0ffaa,
+    inset 0 0 30px #00cfefff;
+  background: linear-gradient(135deg, #002f3e, #00475f);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.modal-content img {
+  max-height: 100vh;
+  max-width: 100vw;
+  object-fit: contain;
+  border-radius: 14px;
+  filter: drop-shadow(0 0 1.2rem #00f0ffbb);
+}
+
+/* Close button */
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  color: #00f0ff;
+  font-size: 2.8rem;
+  cursor: pointer;
+  font-weight: 900;
+  filter: drop-shadow(0 0 6px #00e5ffcc);
+  transition: color 0.25s ease, filter 0.25s ease;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+  color: #aaffff;
+  filter: drop-shadow(0 0 8px #00ffffff);
+  outline: none;
+}
+
+/* Responsive tweaks */
 @media (max-width: 900px) {
   .cards-grid {
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -52,12 +217,13 @@ body {
     font-size: 1rem;
   }
   .cards-grid {
-    grid-template-columns: 1fr !important; /* One card per row on small/mobile */
-    gap: 1rem;
+    max-width: 100%;
     padding: 0 1rem;
+    grid-template-columns: 1fr !important;
+    gap: 1rem;
   }
   .card {
-    width: 100%; /* Make cards fill the container width */
+    width: 100%;
     aspect-ratio: 2 / 3;
   }
   .card-text {
@@ -70,30 +236,7 @@ body {
   }
 }
 
-/* Modal adjustments */
-.modal-content {
-  max-width: 90vw;
-  max-height: 90vh;
-  padding: 0.5rem;
-  border-radius: 18px;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #002f3e, #00475f);
-  user-select: none;
-}
-
-.modal-content img {
-  max-height: 100vh;
-  max-width: 100vw;
-  object-fit: contain;
-  border-radius: 14px;
-  filter: drop-shadow(0 0 1.2rem #00f0ffbb);
-  box-sizing: border-box;
-}
-
-/* Ensure main content doesn't overflow */
+/* Ensure main content doesn't overflow vertically or horizontally */
 main {
   width: 100%;
   max-width: 1200px;
